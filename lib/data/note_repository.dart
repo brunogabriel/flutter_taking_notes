@@ -10,7 +10,7 @@ class NoteReposositoryImp implements NoteRepository {
     return _instance;
   }
   static final NoteReposositoryImp _instance = NoteReposositoryImp._internal();
-  late final DataSource _selectedDataSource;
+  late DataSource _selectedDataSource;
 
   void selectDataSource(DataSource newDataSource) {
     _selectedDataSource = newDataSource;

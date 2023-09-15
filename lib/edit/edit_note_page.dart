@@ -41,16 +41,18 @@ class _EditNotePageState extends State<EditNotePage> {
       appBar: AppBar(
         title: Text(widget.isUpdating ? 'Update Note' : 'Create Note'),
         actions: [
-          IconButton(
-            onPressed: () async {
-              if (widget.note != null) {
-                await _repository.delete(widget.note!);
-              }
-              if (!mounted) return;
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(CupertinoIcons.trash),
-          )
+          if (widget.isUpdating) ...{
+            IconButton(
+              onPressed: () async {
+                if (widget.note != null) {
+                  await _repository.delete(widget.note!);
+                }
+                if (!mounted) return;
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(CupertinoIcons.trash),
+            )
+          }
         ],
       ),
       body: Form(
