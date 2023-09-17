@@ -2,7 +2,7 @@ enum DBSource {
   memory('Memory'),
   sqLite('Pure Sqlite'),
   drift('Drift'),
-  hive('Hive');
+  isar('Isar');
 
   const DBSource(this.name);
   final String name;

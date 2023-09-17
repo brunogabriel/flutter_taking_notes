@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_taking_notes/data/drift/drift_data_source.dart';
-import 'package:flutter_taking_notes/data/hive/entity/hive_note_entity.dart';
-import 'package:flutter_taking_notes/data/hive/hive_data_source.dart';
+import 'package:flutter_taking_notes/data/isar/entity/isar_note_entity.dart';
+import 'package:flutter_taking_notes/data/isar/isar_data_source.dart';
 import 'package:flutter_taking_notes/data/memory/memory_data_source.dart';
 import 'package:flutter_taking_notes/data/note_repository.dart';
 import 'package:flutter_taking_notes/data/sqlite/sqlite_data_source.dart';
 import 'package:flutter_taking_notes/data/sqlite/sqlite_db.dart';
 import 'package:flutter_taking_notes/list/notes_list_page.dart';
 import 'package:flutter_taking_notes/source_selection/db_source.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../data/drift/drift_db.dart';
 
@@ -39,8 +40,8 @@ class _SourceSelectionPageState extends State<SourceSelectionPage> {
                 await initPureSqlite();
               case DBSource.drift:
                 await initDrift();
-              case DBSource.hive:
-                await initHive();
+              case DBSource.isar:
+                await initIsar();
             }
             if (!mounted) return;
             Navigator.of(context).push(MaterialPageRoute(
@@ -65,10 +66,10 @@ class _SourceSelectionPageState extends State<SourceSelectionPage> {
     _reposositoryImp.selectDataSource(DriftDataSource(driftDb));
   }
 
-  Future<void> initHive() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(HiveNoteEntityAdapter(), override: true);
-    _reposositoryImp.selectDataSource(const HiveDataSource('notes'));
+  Future<void> initIsar() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final isar = await Isar.open([IsarNoteEntitySchema], directory: dir.path);
+    _reposositoryImp.selectDataSource(IsarDataSource(isar));
   }
 
   void initInMemory() {
