@@ -11,7 +11,7 @@ class MemoryDataSource implements DataSource {
   @override
   FutureOr<void> delete(Note model) {
     final entity = MemoryNoteEntity.fromNote(model);
-    _notes.removeWhere((element) => element == entity);
+    _notes.removeWhere((element) => element.id == entity.id);
   }
 
   @override
